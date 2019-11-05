@@ -1,9 +1,23 @@
 <?php
-spl_autoload_register('auto_loader');
+spl_autoload_register('system_loader');
+spl_autoload_register('models_loader');
 
-function auto_loader($className)
+function system_loader($className)
 {
-    $path = './system/';
+  $path = './system/';
 
-    include $path.$className.'.php';
+  $file = $path.$className.'.php';
+
+  if (file_exists($file))
+    include $file;
+}
+
+function models_loader($className)
+{
+  $path = './models/';
+
+  $file = $path.$className.'.php';
+
+  if (file_exists($file))
+    include $file;
 }
