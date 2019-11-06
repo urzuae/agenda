@@ -28,6 +28,7 @@ class Email
     $params = $this->prepare_params();
     if($this->id == null) {
       $db->insert("emails", $params);
+      $this->id = $db->insert_id();
     } else {
       $db->update("emails", $params, $this->id);
     }

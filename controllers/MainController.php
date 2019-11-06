@@ -22,6 +22,20 @@ class MainController extends Controller
     $person = new Person($params->first_name, $params->last_name);
 
     $person->save();
+
+    if($params->emails != null) {
+      foreach($params->emails as $email_obj) {
+        $email = new Email($email_obj->address, $email_obj->type, $person->id);
+        $email->save();
+      }
+    }
+
+    if($params->phones != null) {
+      foreach($params->phones as $phone_obj) {
+        $phone = new Phone($phone_obj->number, $phone_obj->type, $person->id);
+        $phone->save();
+      }
+    }
   }
 
   private function get_person()
@@ -40,6 +54,20 @@ class MainController extends Controller
     $person->last_name = $this->request->params->last_name;
 
     $person->save();
+
+    if($this->request->params->emails != null) {
+      foreach($this->request->params->emails as $email_obj) {
+        $email = new Email($email_obj->address, $email_obj->type, $person->id, $email_obj->id ?? null);
+        $email->save();
+      }
+    }
+
+    if($this->request->params->phones != null) {
+      foreach($this->request->params->phones as $phone_obj) {
+        $phone = new Phone($phone_obj->number, $phone_obj->type, $person->id, $phone_obj->id ?? null);
+        $phone->save();
+      }
+    }
 
     header("Content-Type: application/json; charset=UTF-8");
     echo json_encode($person);

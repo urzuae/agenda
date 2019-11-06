@@ -28,6 +28,7 @@ class Person
     $params = $this->prepare_params();
     if($this->id == null) {
       $db->insert("people", $params);
+      $this->id = $db->insert_id();
     } else {
       $db->update("people", $params, $this->id);
     }

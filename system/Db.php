@@ -31,18 +31,17 @@ class Db
 
     $sql = "INSERT INTO {$table} ({$keys}) VALUES ('{$values}')";
 
-    $this->ins->query($sql);
+    return $this->ins->query($sql);
   }
 
   public function update($table, $params, $id)
   {
     $query = array();
-    foreach($params as $key => $value)
-    {
+    foreach($params as $key => $value) {
       $query[] = "{$key} = '{$value}'";
     }
-    $query = implode(",", $query);
 
+    $query = implode(",", $query);
 
     $sql = "UPDATE {$table} SET {$query} WHERE id = {$id}";
 
@@ -54,5 +53,10 @@ class Db
     $query = "DELETE FROM {$table} WHERE id = {$id}";
 
     $this->ins->query($query);
+  }
+
+  public function insert_id()
+  {
+    return $this->ins->insert_id;
   }
 }

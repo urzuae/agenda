@@ -28,6 +28,7 @@ class Phone
     $params = $this->prepare_params();
     if($this->id == null) {
       $db->insert("phones", $params);
+      $this->id = $db->insert_id();
     } else {
       $db->update("phones", $params, $this->id);
     }
