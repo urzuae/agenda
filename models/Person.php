@@ -21,7 +21,10 @@ class Person
 
   public static function find($id)
   {
-
+    $db = new Db();
+    $result = $db->select("people", "id, first_name, last_name", $id);
+    $obj = $result->fetch_object();
+    return new Person($obj->first_name, $obj->last_name, $obj->id);
   }
 
   public function add_phone()

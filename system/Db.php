@@ -9,6 +9,13 @@ class Db
     $this->ins = new mysqli($host, $user, $pass, $db_n);
   }
 
+  public function select($table, $fields, $id)
+  {
+    $query = "SELECT {$fields} FROM {$table} WHERE id = {$id}";
+
+    return $this->ins->query($query);
+  }
+
   public function insert($table, $params)
   {
     $keys = [];
@@ -23,8 +30,6 @@ class Db
     $values = implode("','", $values);
 
     $sql = "INSERT INTO {$table} ({$keys}) VALUES ('{$values}')";
-
-    echo $sql;
 
     $this->ins->query($sql);
   }

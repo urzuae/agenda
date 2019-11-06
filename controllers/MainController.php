@@ -8,24 +8,12 @@ class MainController
   {
     $this->request = $request;
     $this->routes();
+    $this->verifyUrl();
   }
 
   public function make_call()
   {
-
-    if(!array_key_exists($this->request->get_route(), $this->route))
-    {
-      header("HTTP/1.0 404 Not Found");
-      die();
-    }
-    
     $method = $this->route[$this->request->get_route()];
-
-    if(!method_exists($this, $method))
-    {
-      header("HTTP/1.0 404 Not Found");
-      die();
-    }
     
     $this->$method($this->request->params);
   }
@@ -35,6 +23,18 @@ class MainController
     $person = new Person($params->first_name, $params->last_name);
 
     $person->save();
+  }
+
+  private function get_person()
+  {
+    $person = Person::find($this->request->params->id);
+
+    header("Content-Type: application/json; charset=UTF-8");
+    echo json_encode($person);
+  }
+
+  private function update_person()
+  {
   }
 
   private function create_phone($params)
@@ -54,7 +54,28 @@ class MainController
   private function routes()
   {
     $this->route["POST:/person"] = "create_person";
+    $this->route["GET:/person/:id"] = "get_person";
+    $this->route["PATCH:/person/:id"] = "update_person";
     $this->route["POST:/phone"] = "create_phone";
+    $this->route["GET:/phone/:id"] = "get_person";
     $this->route["POST:/email"] = "create_email";
+    $this->route["GET:/email/:id"] = "get_person";
+  }
+
+  private function verifyUrl()
+  {
+    if(!array_key_exists($this->request->get_route(), $this->route))
+    {
+      header("HTTP/1.0 404 Not Found");
+      die();
+    }
+
+    $method = $this->route[$this->request->get_route()];
+
+    if(!method_exists($this, $method))
+    {
+      header("HTTP/1.0 404 Not Found");
+      die();
+    }
   }
 }
