@@ -36,11 +36,12 @@ class Db
 
   public function update($table, $params, $id)
   {
-    $query = "";
+    $query = array();
     foreach($params as $key => $value)
     {
-      $query .= "{$key} = '{$value}'";
+      $query[] = "{$key} = '{$value}'";
     }
+    $query = implode(",", $query);
 
 
     $sql = "UPDATE {$table} SET {$query} WHERE id = {$id}";

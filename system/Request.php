@@ -10,8 +10,7 @@ class Request
     $this->type = $_SERVER['REQUEST_METHOD'];
     $this->uri = $_SERVER['REQUEST_URI'];
     $this->params = json_decode(file_get_contents('php://input'));
-    if("POST" != $this->type)
-    {
+    if("GET" == $this->type || "PATCH" == $this->type) {
       $this->parse_uri();
     }
   }
@@ -23,7 +22,9 @@ class Request
 
   private function parse_uri()
   {
-    $this->params = new stdClass();
+    if($this->params == null) {
+      $this->params = new stdClass();
+    }
     $result = array();
     preg_match("/\d+$/", $this->uri, $result);
     $this->params->id = $result[0];

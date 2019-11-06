@@ -14,11 +14,6 @@ class Person
     $this->id = $id;
   }
 
-  protected function fill()
-  {
-
-  }
-
   public static function find($id)
   {
     $db = new Db();
@@ -27,21 +22,15 @@ class Person
     return new Person($obj->first_name, $obj->last_name, $obj->id);
   }
 
-  public function add_phone()
-  {
-
-  }
-
-  public function add_email()
-  {
-
-  }
-  
   public function save()
   {
     $db = new Db();
     $params = $this->prepare_params();
-    $db->insert("people", $params);
+    if($this->id == null) {
+      $db->insert("people", $params);
+    } else {
+      $db->update("people", $params, $this->id);
+    }
   }
 
   public function delete()

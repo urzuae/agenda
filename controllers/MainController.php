@@ -35,6 +35,15 @@ class MainController
 
   private function update_person()
   {
+    $person = Person::find($this->request->params->id);
+
+    $person->first_name = $this->request->params->first_name;
+    $person->last_name = $this->request->params->last_name;
+
+    $person->save();
+
+    header("Content-Type: application/json; charset=UTF-8");
+    echo json_encode($person);
   }
 
   private function create_phone($params)
