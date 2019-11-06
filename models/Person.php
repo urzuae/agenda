@@ -35,7 +35,8 @@ class Person
 
   public function delete()
   {
-
+    $db = new Db();
+    $db->delete("people", $this->id);
   }
 
   protected function prepare_params()

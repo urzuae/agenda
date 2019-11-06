@@ -1,13 +1,12 @@
 <?php
-class MainController
+class MainController extends Controller
 {
   var $request = null;
   var $route = array();
 
   public function __construct($request)
   {
-    $this->request = $request;
-    $this->routes();
+    parent::__construct($request);
     $this->verifyUrl();
   }
 
@@ -46,6 +45,15 @@ class MainController
     echo json_encode($person);
   }
 
+  private function delete_person()
+  {
+    $person = Person::find($this->request->params->id);
+
+    $person->delete();
+
+    header("HTTP/1.0 204 No Response");
+  }
+
   private function create_phone($params)
   {
     $phone = new Phone($params->number, $params->type, $params->user_id);
@@ -58,33 +66,5 @@ class MainController
     $email = new Email($params->address, $params->type, $params->user_id);
 
     $email->save();
-  }
-
-  private function routes()
-  {
-    $this->route["POST:/person"] = "create_person";
-    $this->route["GET:/person/:id"] = "get_person";
-    $this->route["PATCH:/person/:id"] = "update_person";
-    $this->route["POST:/phone"] = "create_phone";
-    $this->route["GET:/phone/:id"] = "get_person";
-    $this->route["POST:/email"] = "create_email";
-    $this->route["GET:/email/:id"] = "get_person";
-  }
-
-  private function verifyUrl()
-  {
-    if(!array_key_exists($this->request->get_route(), $this->route))
-    {
-      header("HTTP/1.0 404 Not Found");
-      die();
-    }
-
-    $method = $this->route[$this->request->get_route()];
-
-    if(!method_exists($this, $method))
-    {
-      header("HTTP/1.0 404 Not Found");
-      die();
-    }
   }
 }

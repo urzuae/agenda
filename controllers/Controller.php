@@ -1,0 +1,47 @@
+<?php
+class Controller
+{
+  protected $route = array();
+
+  public function __construct($request)
+  {
+    $this->request = $request;
+    $this->routes();
+  }
+
+  protected function routes()
+  {
+    $this->route["POST:/person"] = "create_person";
+    $this->route["GET:/person/:id"] = "get_person";
+    $this->route["PATCH:/person/:id"] = "update_person";
+    $this->route["DELETE:/person/:id"] = "delete_person";
+
+    $this->route["POST:/phone"] = "create_phone";
+    $this->route["GET:/phone/:id"] = "get_phone";
+    $this->route["PATCH:/phone/:id"] = "update_phone";
+    $this->route["DELETE:/phone/:id"] = "delete_phone";
+
+    $this->route["POST:/email"] = "create_email";
+    $this->route["GET:/email/:id"] = "get_email";
+    $this->route["PATCH:/email/:id"] = "update_email";
+    $this->route["DELETE:/email/:id"] = "delete_email";
+  }
+
+  protected function verifyUrl()
+  {
+    if(!array_key_exists($this->request->get_route(), $this->route))
+    {
+      header("HTTP/1.0 404 Not Found");
+      die();
+    }
+
+    $method = $this->route[$this->request->get_route()];
+
+    if(!method_exists($this, $method))
+    {
+      header("HTTP/1.0 404 Not Found");
+      die();
+    }
+  }
+
+}
