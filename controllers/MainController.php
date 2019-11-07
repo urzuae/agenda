@@ -23,14 +23,14 @@ class MainController extends Controller
 
     $person->save();
 
-    if($params->emails != null) {
+    if(isset($params->emails) && $params->emails != null) {
       foreach($params->emails as $email_obj) {
         $email = new Email($email_obj->address, $email_obj->type, $person->id);
         $email->save();
       }
     }
 
-    if($params->phones != null) {
+    if(isset($params->phones) && $params->phones != null) {
       foreach($params->phones as $phone_obj) {
         $phone = new Phone($phone_obj->number, $phone_obj->type, $person->id);
         $phone->save();
