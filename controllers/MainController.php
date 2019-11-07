@@ -46,24 +46,24 @@ class MainController extends Controller
     echo json_encode($person);
   }
 
-  private function update_person()
+  private function update_person($params)
   {
-    $person = Person::find($this->request->params->id);
+    $person = Person::find($params->id);
 
-    $person->first_name = $this->request->params->first_name;
-    $person->last_name = $this->request->params->last_name;
+    $person->first_name = $params->first_name;
+    $person->last_name = $params->last_name;
 
     $person->save();
 
-    if($this->request->params->emails != null) {
-      foreach($this->request->params->emails as $email_obj) {
+    if($params->emails != null) {
+      foreach($params->emails as $email_obj) {
         $email = new Email($email_obj->address, $email_obj->type, $person->id, $email_obj->id ?? null);
         $email->save();
       }
     }
 
-    if($this->request->params->phones != null) {
-      foreach($this->request->params->phones as $phone_obj) {
+    if($params->phones != null) {
+      foreach($params->phones as $phone_obj) {
         $phone = new Phone($phone_obj->number, $phone_obj->type, $person->id, $phone_obj->id ?? null);
         $phone->save();
       }
@@ -97,12 +97,12 @@ class MainController extends Controller
     echo json_encode($phone);
   }
 
-  private function update_phone()
+  private function update_phone($params)
   {
-    $phone = Phone::find($this->request->params->id);
+    $phone = Phone::find($params->id);
 
-    $phone->number = $this->request->params->number;
-    $phone->type = $this->request->params->type;
+    $phone->number = $params->number;
+    $phone->type = $params->type;
 
     $phone->save();
 
@@ -134,12 +134,12 @@ class MainController extends Controller
     echo json_encode($email);
   }
 
-  private function update_email()
+  private function update_email($params)
   {
-    $email = Email::find($this->request->params->id);
+    $email = Email::find($params->id);
 
-    $email->address = $this->request->params->address;
-    $email->type = $this->request->params->type;
+    $email->address = $params->address;
+    $email->type = $params->type;
 
     $email->save();
 
