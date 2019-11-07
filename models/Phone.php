@@ -1,43 +1,30 @@
 <?php
-class Phone
+class Phone extends Model
 {
   public $id;
   public $number;
   public $type;
   public $person;
 
-  public function __construct($number, $type, $person_id, $id = null)
+  public function __construct($number, $type, $person_id, $id = null, $include = true)
   {
+    $this->table_name = "phones";
     $this->number = $number;
     $this->type = $type;
-    $this->person = Person::find($person_id);
+    $this->person = $person_id;
+    if($include)
+      $this->person = Person::find($person_id, false);
     $this->id = $id;
   }
 
-  public static function find($id)
+  public static function find($id, $include = true)
   {
     $db = new Db();
     $result = $db->select("phones", "id, number, type, person_id", $id);
+    if(0 == $result->num_rows)
+      return null;
     $obj = $result->fetch_object();
-    return new Phone($obj->number, $obj->type, $obj->person_id, $obj->id);
-  }
-
-  public function save()
-  {
-    $db = new Db();
-    $params = $this->prepare_params();
-    if($this->id == null) {
-      $db->insert("phones", $params);
-      $this->id = $db->insert_id();
-    } else {
-      $db->update("phones", $params, $this->id);
-    }
-  }
-
-  public function delete()
-  {
-    $db = new Db();
-    $db->delete("phones", $this->id);
+    return new Phone($obj->number, $obj->type, $obj->person_id, $obj->id, $include);
   }
 
   protected function prepare_params()

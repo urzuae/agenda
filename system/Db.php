@@ -9,6 +9,13 @@ class Db
     $this->ins = new mysqli($host, $user, $pass, $db_n);
   }
 
+  public function get_by_parent_id($table, $parent_id)
+  {
+    $query = "SELECT id FROM {$table} WHERE person_id = {$parent_id}";
+
+    return $this->ins->query($query); 
+  }
+
   public function select($table, $fields, $id)
   {
     $query = "SELECT {$fields} FROM {$table} WHERE id = {$id}";

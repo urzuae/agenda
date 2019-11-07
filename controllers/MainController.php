@@ -36,19 +36,26 @@ class MainController extends Controller
         $phone->save();
       }
     }
+
+    $this->success($person, 201);
   }
 
   private function get_person()
   {
     $person = Person::find($this->request->params->id);
 
-    header("Content-Type: application/json; charset=UTF-8");
-    echo json_encode($person);
+    if(null == $person)
+      $this->not_found();
+
+    $this->success($person, 200);
   }
 
   private function update_person($params)
   {
     $person = Person::find($params->id);
+
+    if(null == $person)
+      $this->not_found();
 
     $person->first_name = $params->first_name;
     $person->last_name = $params->last_name;
@@ -69,54 +76,68 @@ class MainController extends Controller
       }
     }
 
-    header("Content-Type: application/json; charset=UTF-8");
-    echo json_encode($person);
+    $this->success($person, 200);
   }
 
   private function delete_person()
   {
     $person = Person::find($this->request->params->id);
 
+    if(null == $person)
+      $this->not_found();
+
     $person->delete();
 
-    header("HTTP/1.0 204 No Response");
+    $this->no_content();
   }
 
   private function create_phone($params)
   {
     $phone = new Phone($params->number, $params->type, $params->person_id);
 
+    if(null == $phone)
+      $this->not_found();
+
     $phone->save();
+
+    $this->success($phone, 201);
   }
 
   private function get_phone()
   {
     $phone = Phone::find($this->request->params->id);
 
-    header("Content-Type: application/json; charset=UTF-8");
-    echo json_encode($phone);
+    if(null == $phone)
+      $this->not_found();
+
+    $this->success($phone, 200);
   }
 
   private function update_phone($params)
   {
     $phone = Phone::find($params->id);
 
+    if(null == $phone)
+      $this->not_found();
+
     $phone->number = $params->number;
     $phone->type = $params->type;
 
     $phone->save();
 
-    header("Content-Type: application/json; charset=UTF-8");
-    echo json_encode($phone);
+    $this->success($phone, 200);
   }
 
   private function delete_phone()
   {
     $phone = Phone::find($this->request->params->id);
 
+    if(null == $phone)
+      $this->not_found();
+
     $phone->delete();
 
-    header("HTTP/1.0 204 No Response");
+    $this->no_content();
   }
 
   private function create_email($params)
@@ -124,35 +145,44 @@ class MainController extends Controller
     $email = new Email($params->address, $params->type, $params->person_id);
 
     $email->save();
+
+    $this->success($email, 201);
   }
 
   private function get_email()
   {
     $email = email::find($this->request->params->id);
 
-    header("Content-Type: application/json; charset=UTF-8");
-    echo json_encode($email);
+    if(null == $email)
+      $this->not_found();
+
+    $this->success($email, 200);
   }
 
   private function update_email($params)
   {
     $email = Email::find($params->id);
 
+    if(null == $email)
+      $this->not_found();
+
     $email->address = $params->address;
     $email->type = $params->type;
 
     $email->save();
 
-    header("Content-Type: application/json; charset=UTF-8");
-    echo json_encode($email);
+    $this->success($email, 200);
   }
 
   private function delete_email()
   {
     $email = Email::find($this->request->params->id);
 
+    if(null == $email)
+      $this->not_found();
+
     $email->delete();
 
-    header("HTTP/1.0 204 No Response");
+    $this->no_content();
   }
 }

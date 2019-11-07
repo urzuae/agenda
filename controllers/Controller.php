@@ -31,17 +31,33 @@ class Controller
   {
     if(!array_key_exists($this->request->get_route(), $this->route))
     {
-      header("HTTP/1.0 404 Not Found");
-      die();
+      $this->not_found();
     }
 
     $method = $this->route[$this->request->get_route()];
 
     if(!method_exists($this, $method))
     {
-      header("HTTP/1.0 404 Not Found");
-      die();
+      $this->not_found();
     }
+  }
+
+  public function not_found()
+  {
+    header("HTTP/1.0 404 Not Found");
+    die();
+  }
+
+  public function success($object, $code)
+  {
+    header("HTTP/1.0 {$code} Success");
+    header("Content-Type: application/json; charset=UTF-8");
+    echo json_encode($object);
+  }
+
+  public function no_content()
+  {
+    header("HTTP/1.0 204 No Response");
   }
 
 }
