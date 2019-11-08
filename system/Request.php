@@ -8,7 +8,7 @@ class Request
   public function __construct()
   {
     $this->type = $_SERVER['REQUEST_METHOD'];
-    $this->uri = $_SERVER['REQUEST_URI'];
+    $this->uri = $_SERVER['QUERY_STRING'] ?? "";
     $this->params = json_decode(file_get_contents('php://input'));
     if("GET" == $this->type || "PATCH" == $this->type || "DELETE" == $this->type) {
       $this->parse_uri();

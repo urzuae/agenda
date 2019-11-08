@@ -29,6 +29,20 @@ class Person extends Model
     return new Person($obj->first_name, $obj->last_name, $obj->id, $include);
   }
 
+  public static function all($include = true)
+  {
+    $people = array();
+    $db = new Db();
+    $result = $db->get("people", "id, first_name, last_name");
+    if(0 == $result->num_rows)
+      return null;
+    while($obj = $result->fetch_object())
+    {
+      $people[] = new Person($obj->first_name, $obj->last_name, $obj->id, $include);
+    }
+    return $people;
+  }
+
   protected function prepare_params()
   {
     return array("first_name" => $this->first_name, "last_name" => $this->last_name);

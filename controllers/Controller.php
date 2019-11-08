@@ -11,6 +11,8 @@ class Controller
 
   protected function routes()
   {
+    $this->route["GET:"] = "root";
+
     $this->route["POST:/person"] = "create_person";
     $this->route["GET:/person/:id"] = "get_person";
     $this->route["PATCH:/person/:id"] = "update_person";

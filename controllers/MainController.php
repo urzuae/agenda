@@ -17,6 +17,13 @@ class MainController extends Controller
     $this->$method($this->request->params);
   }
 
+  private function root()
+  {
+    $people = Person::all();
+
+    $this->success($people, 200);
+  }
+
   private function create_person($params)
   {
     $person = new Person($params->first_name, $params->last_name);

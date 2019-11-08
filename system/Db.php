@@ -16,6 +16,13 @@ class Db
     return $this->ins->query($query); 
   }
 
+  public function get($table, $fields)
+  {
+    $query = "SELECT {$fields} FROM {$table}";
+
+    return $this->ins->query($query);
+  }
+
   public function select($table, $fields, $id)
   {
     $query = "SELECT {$fields} FROM {$table} WHERE id = {$id}";
